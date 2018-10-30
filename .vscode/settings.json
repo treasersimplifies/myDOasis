@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "__string": "cpp",
+        "algorithm": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
+    },
+    "git.ignoreLimitWarning": true
+}
