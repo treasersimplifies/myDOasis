@@ -8,7 +8,7 @@ namespace Oasis {
 
     class Players : public contract {
         using contract::contract;   //in order to use its constructor 
-        
+       
         public:
             Players(account_name self):contract(self) {}
 
