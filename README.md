@@ -3,12 +3,12 @@
 The structure of the project is an imitation of EOSIO itself...
 
 ## How to use
-Generate the abi file of each smart contract and the set it.For this whole project, which is created under VSCode with macOS, you can follow the following steps:
-        (1)Open this project with VSCode
-        (2)shift+cmd+P ==> type “Tasks” and select “Configure Task“ ==> select “Create tasks.json file from template” ==》 “Others“
-you then can see our taks.json, it's been written, so you don't need to worry.
-        (3) Set VSCode shortcuts for .vscode/script/compile.sh, build.sh & generate.sh:
-Preference ==> Keyboard Shortcuts ==> type in :
+Generate the abi file of each smart contract and the set it.For this whole project, which is created under VSCode with macOS, you can follow the following steps:<br>
+(1)Open this project with VSCode<br>
+(2)shift+cmd+P ==> type “Tasks” and select “Configure Task“ ==> select “Create tasks.json file from template” ==》 “Others“<br>
+you then can see our taks.json, it's been written, so you don't need to worry.<br>
+(3) Set VSCode shortcuts for .vscode/script/compile.sh, build.sh & generate.sh:<br>
+Preference ==> Keyboard Shortcuts ==> type in :<br>
 ```bash 
 // Place your key bindings in this file to overwrite the defaults
 [
