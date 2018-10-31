@@ -1,9 +1,10 @@
 #include "Players.hpp"
-
+// #include <iostream>
 namespace Oasis {
     [[eosio::action]]
     void Players::add(const account_name account, string& username) {
         print("Inside add action yahoooooo!\n");
+        // std::cout << "Inside add action yahoooooo!\n" ;
         /**
          * We require that only the owner of an account can use this action
          * or somebody with the account authorization
@@ -39,6 +40,7 @@ namespace Oasis {
 
     }
 
+
     [[eosio::action]]
     void Players::update(account_name account, uint64_t level, int64_t healthPoints, int64_t energyPoints) {
         print("Inside update action yahoooooo!\n");
@@ -71,6 +73,22 @@ namespace Oasis {
         print("You have successfully UPDATE a new account in the OASIS!\n");
     }
 
+
+    [[eosio::action]]
+    void Players::addability(const account_name account, string& ability) {
+        require_auth(account);
+
+        playerIndex players(_self, _self);
+
+        auto iterator = players.find(account);
+        eosio_assert(iterator != players.end(), "Address for account not found");
+
+        players.modify(iterator, account, [&](auto& player) {
+            player.abilities.push_back(ability);
+        });
+    }
+
+
     [[eosio::action]]
     void Players::getplayer(const account_name account) {
         print("Inside getplayer action yahoooooo!\n");
@@ -84,7 +102,66 @@ namespace Oasis {
          * containing the specified secondary key
         */
         auto currentPlayer = players.get(account);
-        print("Username: ", currentPlayer.username.c_str(), " Level: ", currentPlayer.level, " Health: ", currentPlayer.health_points, " Energy: ", currentPlayer.energy_points);
+
+        print("Username: ", currentPlayer.username.c_str());
+        print(" Level: ", currentPlayer.level);
+        print(" Health: ", currentPlayer.health_points);
+        print(" Energy: ", currentPlayer.energy_points);
+                
+        if (currentPlayer.abilities.size() > 0) {
+            print(" Abilities: ");
+
+            for (uint32_t i = 0; i < currentPlayer.abilities.size(); i++) {
+                print(currentPlayer.abilities.at(i).c_str(), " ");
+            }
+        } else {
+            print(" No Abilities");
+        }
+
+        if (currentPlayer.inventory.size() > 0) {
+            print(" Items: ");
+
+            for (uint32_t i = 0; i < currentPlayer.inventory.size(); i++) {
+                item currentItem = currentPlayer.inventory.at(i);
+                print(currentItem.name.c_str(), " == ");
+            }
+        } else {
+            print(" Empty inventory");
+        }
+    }    
+
+
+    [[eosio::action]]
+    void Players::additem(const account_name account, item purchased_item) {
+        playerIndex players(_self, _self);
+
+        auto iterator = players.find(account);
+        eosio_assert(iterator != players.end(), "Address for account not found");
+
+        players.modify(iterator, account, [&](auto& player) {
+            player.energy_points += purchased_item.power;
+            player.health_points += purchased_item.health;
+            player.level += purchased_item.level_up;
+            player.abilities.push_back(purchased_item.ability);
+            player.inventory.push_back(item{
+                purchased_item.item_id,
+                purchased_item.name,
+                purchased_item.power,
+                purchased_item.health,
+                purchased_item.ability,
+                purchased_item.level_up
+            });
+            //why no : player.inventory.push_back(item); ?
+        });
+
+        print("Item Id: ", purchased_item.item_id);
+        print(" | Name: ", purchased_item.name.c_str());
+        print(" | Power: ", purchased_item.power); 
+        print(" | Health: ", purchased_item.health);
+        print(" | Ability: ", purchased_item.ability.c_str());
+        print(" | Level up: ", purchased_item.level_up);
+        
     }
 
 }
+
